@@ -14,5 +14,7 @@
         public string Email { set; get; }
         public bool Deleted { set; get; }
 
+        public List<EnviromentalReport> enviromentalReports { set; get; } = new List<EnviromentalReport>();
+
     }
 }
