@@ -3,6 +3,7 @@ using EcoTrack.API.Dtos;
 using EcoTrack.BL.Exceptions;
 using EcoTrack.BL.Services.Users.Interfaces;
 using EcoTrack.PL.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,12 +15,12 @@ namespace EcoTrack.API.Controllers
     {
         private readonly IUsersService _usersService;
         private readonly IMapper _mapper;
-        private readonly ILogger<UsersController> _logger;  
+        private readonly ILogger<UsersController> _logger;
         public UsersController(
             IUsersService usersService,
             IMapper mapper,
             ILogger<UsersController> logger
-            ) 
+            )
         {
             _usersService = usersService;
             _mapper = mapper;
@@ -33,7 +34,7 @@ namespace EcoTrack.API.Controllers
             [FromQuery] string? cityName,
             [FromQuery] string? countryName,
             [FromQuery] int pageSize = 30,
-            [FromQuery] int page= 1
+            [FromQuery] int page = 1
             )
         {
             //TODO-POLICY:retrieve just followed user.??X
@@ -41,17 +42,18 @@ namespace EcoTrack.API.Controllers
             //TODO: Return pagination metadata.
 
             var users = await _usersService.GetAllUsersAsync(firstName, lastName, cityName, countryName, pageSize, page);
-            var usersDto = _mapper.Map<IEnumerable<UserDto>>( users );
+            var usersDto = _mapper.Map<IEnumerable<UserDto>>(users);
 
-            return Ok( usersDto );
+            return Ok(usersDto);
         }
+
 
         [HttpGet("{userId}")]
         public async Task<ActionResult<UserDto>> GetUserById(int userId)
         {
             var user = await _usersService.GetUserByIdAsync(userId);
 
-            if(user == null) 
+            if (user == null)
             {
                 return NotFound();
             }
@@ -71,7 +73,7 @@ namespace EcoTrack.API.Controllers
             //TODO-POLICY: User can update just himself.
             var user = await _usersService.GetUserByIdAsync(userId);
 
-            if(user == null)
+            if (user == null)
             {
                 return NotFound();
             }
@@ -81,7 +83,7 @@ namespace EcoTrack.API.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if(!TryValidateModel(userDtoForUpdate))
+            if (!TryValidateModel(userDtoForUpdate))
             {
                 return BadRequest(ModelState);
             }
@@ -100,24 +102,32 @@ namespace EcoTrack.API.Controllers
             {
                 await _usersService.AddUserAsync(user);
             }
-            catch(UsernameUsedException e)
+            catch (UsernameUsedException e)
             {
                 return Conflict(new
-                                    {
-                                        message= e.Message
-                                    });
+                {
+                    message = e.Message
+                });
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _logger.LogError(e, "Error on adding a user");
                 return StatusCode(500, "Internal Server Error.");
             }
             return NoContent();
         }
+
         [HttpDelete("{userId}")]
+        [Authorize]
         public async Task<ActionResult> DeleteUser(int userId)
         {
-            //TODO-POLICY: Just authorized/admins users can delete.
+            var userRequestedId = long.Parse(User.Claims.FirstOrDefault(c => c.Type.EndsWith("nameidentifier"))!.Value);
+
+            if (userId != userRequestedId)
+            {
+                return Forbid();
+            }
+
             try
             {
                 await _usersService.DeleteUserAsync(userId);

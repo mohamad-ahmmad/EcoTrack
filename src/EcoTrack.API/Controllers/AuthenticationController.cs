@@ -36,7 +36,7 @@ namespace EcoTrack.API.Controllers
 
             var claims = new List<Claim>
             {
-                new Claim("sub", user.UserId.ToString())
+                new(JwtRegisteredClaimNames.Sub, user.UserId.ToString())
             };
 
             var jwtSecurityToken = new JwtSecurityToken
