@@ -1,14 +1,16 @@
+using EcoTrack.BL.Services.EnviromentalReports;
+using EcoTrack.BL.Services.EnviromentalReports.Interface;
 using EcoTrack.BL.Services.Users;
 using EcoTrack.BL.Services.Users.Interfaces;
 using EcoTrack.PL;
+using EcoTrack.PL.Repositories.EnviromentalReportsTopics;
+using EcoTrack.PL.Repositories.EnviromentalReportsTopics.Interface;
 using EcoTrack.PL.Repositories.Users;
 using EcoTrack.PL.Repositories.Users.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
-using System.Security.Cryptography;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,7 +38,9 @@ builder.Services.AddDbContext<EcoTrackDBContext>(options =>
     options.UseMySql(mysqlConnection, ServerVersion.AutoDetect(mysqlConnection));
 });
 builder.Services.AddScoped<IUserRepository, SqlUserRepository>();
+builder.Services.AddScoped<IEnviromentalReportsTopicsRepository, SqlEnviromentalReportsTopicsRepository>();
 builder.Services.AddTransient<IUsersService, UsersService>();
+builder.Services.AddTransient<IEnviromentalReportsService, EnviromentalReportsService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -45,11 +49,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.TokenValidationParameters = new()
         {
             ValidateIssuer = true,
-            ValidateAudience=true,
+            ValidateAudience = true,
             ValidateIssuerSigningKey = true,
             ValidIssuer = builder.Configuration["Authentication:Issuer"],
-            ValidAudience= builder.Configuration["Authentication:Audience"],
-            IssuerSigningKey= new SymmetricSecurityKey(
+            ValidAudience = builder.Configuration["Authentication:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(builder.Configuration["Authentication:Key"]))
         };
     });
