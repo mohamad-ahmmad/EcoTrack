@@ -20,6 +20,32 @@ namespace EcoTrack.PL
             SeedingLocations(modelBuilder);
             SeedingUsers(modelBuilder);
             SeedingEnviromentalReportsTopics(modelBuilder);
+            SeedingEnviromentalReports(modelBuilder);
+        }
+
+        private void SeedingEnviromentalReports(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<EnviromentalReport>().HasData
+                (
+                    new EnviromentalReport
+                    {
+                        EnviromentalReportId= -10,
+                        EnviromentalReportsTopicId = -3,
+                        IsDeleted = false,
+                        ReportDate = DateTime.UtcNow,
+                        UserId = -9,
+                        Value = 80
+                    },
+                    new EnviromentalReport
+                    {
+                        EnviromentalReportId = -9,
+                        EnviromentalReportsTopicId = -2,
+                        IsDeleted = false,
+                        ReportDate = DateTime.UtcNow,
+                        UserId = -9,
+                        Value = 81.4
+                    }
+                );
         }
 
         private void SeedingEnviromentalReportsTopics(ModelBuilder modelBuilder)
