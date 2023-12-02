@@ -1,6 +1,7 @@
 ﻿using EcoTrack.BL.Exceptions;
 using EcoTrack.BL.Services.Users.Interfaces;
 using EcoTrack.PL.Entities;
+using EcoTrack.PL.Repositories.EnviromentalReports.Interfaces;
 using EcoTrack.PL.Repositories.Users.Interface;
 using System.Security.Cryptography;
 using System.Text;
@@ -10,9 +11,11 @@ namespace EcoTrack.BL.Services.Users
     public class UsersService : IUsersService
     {
         private readonly IUserRepository _userRepository;
-        public UsersService(IUserRepository userRepository)
+        private readonly IEnviromentalReportsRepository _envRepRepository;
+        public UsersService(IUserRepository userRepository, IEnviromentalReportsRepository envRepRepository)
         {
             _userRepository = userRepository;
+            _envRepRepository = envRepRepository;
         }
 
         private static string HashPassword(string input)
@@ -63,11 +66,7 @@ namespace EcoTrack.BL.Services.Users
 
         public async Task DeleteUserAsync(long id)
         {
-            var isFound = await _userRepository.IsFoundByUserIdAsync(id);
-            if (!isFound)
-            {
-                throw new NotFoundUserException($"User with {id} id not found.");
-            }
+            await UserExists(id);
             await _userRepository.DeleteUserAsync(id);
         }
 
@@ -76,6 +75,25 @@ namespace EcoTrack.BL.Services.Users
             var hashedPassword = HashPassword(password);
             var user = _userRepository.GetUserByCredentials(username, hashedPassword);
             return user;
+        }
+
+        public async Task<IEnumerable<EnviromentalReport>> GetEnviromentalReportsAsync(long userId, int? topicId ,int pageSize = 20, int page = 1)
+        {
+            pageSize = Math.Min(pageSize, 20);
+            page = Math.Max(page, 1);
+
+            await UserExists(userId);
+
+            return await _envRepRepository.GetEnviromentalReportsAsync(userId, topicId, pageSize, page);
+        }
+
+        private async Task UserExists(long userId)
+        {
+            var isFound = await _userRepository.IsFoundByUserIdAsync(userId);
+            if (!isFound)
+            {
+                throw new NotFoundUserException($"User with {userId} id not found.");
+            }
         }
     }
 }

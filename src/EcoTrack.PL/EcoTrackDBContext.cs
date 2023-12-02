@@ -13,7 +13,7 @@ namespace EcoTrack.PL
         public DbSet<User> Users { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<EnviromentalReport> EnviromentalReports { get; set; }
-        public DbSet<EnviromentalReportsTopic> enviromentalReportsTopics { get; set; }
+        public DbSet<EnviromentalReportsTopic> EnviromentalReportsTopics { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -14,7 +14,7 @@ namespace EcoTrack.PL.Repositories.EnviromentalReportsTopics
         }
         public async Task<IEnumerable<EnviromentalReportsTopic>> GetAllAsync()
         {
-           return await _dbContext.enviromentalReportsTopics.ToListAsync();
+           return await _dbContext.EnviromentalReportsTopics.ToListAsync();
         }
 
         public async Task AddTopicAsync(EnviromentalReportsTopic topic)
