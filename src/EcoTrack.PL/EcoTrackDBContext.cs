@@ -13,13 +13,39 @@ namespace EcoTrack.PL
         public DbSet<User> Users { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<EnviromentalReport> EnviromentalReports { get; set; }
-        public DbSet<EnviromentalReportsTopic> enviromentalReportsTopics { get; set; }
+        public DbSet<EnviromentalReportsTopic> EnviromentalReportsTopics { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             SeedingLocations(modelBuilder);
             SeedingUsers(modelBuilder);
             SeedingEnviromentalReportsTopics(modelBuilder);
+            SeedingEnviromentalReports(modelBuilder);
+        }
+
+        private void SeedingEnviromentalReports(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<EnviromentalReport>().HasData
+                (
+                    new EnviromentalReport
+                    {
+                        EnviromentalReportId= -10,
+                        EnviromentalReportsTopicId = -3,
+                        IsDeleted = false,
+                        ReportDate = DateTime.UtcNow,
+                        UserId = -9,
+                        Value = 80
+                    },
+                    new EnviromentalReport
+                    {
+                        EnviromentalReportId = -9,
+                        EnviromentalReportsTopicId = -2,
+                        IsDeleted = false,
+                        ReportDate = DateTime.UtcNow,
+                        UserId = -9,
+                        Value = 81.4
+                    }
+                );
         }
 
         private void SeedingEnviromentalReportsTopics(ModelBuilder modelBuilder)

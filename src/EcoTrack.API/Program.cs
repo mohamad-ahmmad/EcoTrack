@@ -3,6 +3,8 @@ using EcoTrack.BL.Services.EnviromentalReports.Interface;
 using EcoTrack.BL.Services.Users;
 using EcoTrack.BL.Services.Users.Interfaces;
 using EcoTrack.PL;
+using EcoTrack.PL.Repositories.EnviromentalReports;
+using EcoTrack.PL.Repositories.EnviromentalReports.Interfaces;
 using EcoTrack.PL.Repositories.EnviromentalReportsTopics;
 using EcoTrack.PL.Repositories.EnviromentalReportsTopics.Interface;
 using EcoTrack.PL.Repositories.Users;
@@ -36,9 +38,11 @@ builder.Services.AddDbContext<EcoTrackDBContext>(options =>
 {
     var mysqlConnection = builder.Configuration["ConnectionStrings:MySqlConnectionString"];
     options.UseMySql(mysqlConnection, ServerVersion.AutoDetect(mysqlConnection));
+    options.EnableSensitiveDataLogging(true);
 });
 builder.Services.AddScoped<IUserRepository, SqlUserRepository>();
 builder.Services.AddScoped<IEnviromentalReportsTopicsRepository, SqlEnviromentalReportsTopicsRepository>();
+builder.Services.AddScoped<IEnviromentalReportsRepository, SqlEnviromentalReportsRepository>();
 builder.Services.AddTransient<IUsersService, UsersService>();
 builder.Services.AddTransient<IEnviromentalReportsService, EnviromentalReportsService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
