@@ -10,6 +10,7 @@ namespace EcoTrack.API.Profiles
         {
             CreateMap< EnviromentalReportDto, EnviromentalReport>();
             CreateMap<EnviromentalReport, EnviromentalReportDto>();
+            CreateMap< EnviromentalReportForPostDto, EnviromentalReport>();
         }
     }
 }

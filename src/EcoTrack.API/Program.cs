@@ -38,6 +38,7 @@ builder.Services.AddDbContext<EcoTrackDBContext>(options =>
 {
     var mysqlConnection = builder.Configuration["ConnectionStrings:MySqlConnectionString"];
     options.UseMySql(mysqlConnection, ServerVersion.AutoDetect(mysqlConnection));
+    options.EnableSensitiveDataLogging(true);
 });
 builder.Services.AddScoped<IUserRepository, SqlUserRepository>();
 builder.Services.AddScoped<IEnviromentalReportsTopicsRepository, SqlEnviromentalReportsTopicsRepository>();

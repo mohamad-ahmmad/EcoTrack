@@ -95,5 +95,11 @@ namespace EcoTrack.BL.Services.Users
                 throw new NotFoundUserException($"User with {userId} id not found.");
             }
         }
+
+        public async Task UploadReportAsync(long userId ,IEnumerable<EnviromentalReport> reports)
+        {
+            //Auth occurs in the api layer.
+            await _envRepRepository.AddReports(userId ,reports);
+        }
     }
 }

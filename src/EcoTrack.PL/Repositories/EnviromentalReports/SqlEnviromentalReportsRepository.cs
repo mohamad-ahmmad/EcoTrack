@@ -11,6 +11,19 @@ namespace EcoTrack.PL.Repositories.EnviromentalReports
         {
             _dbContext = dbContext;
         }
+
+        public async Task AddReports(long userId, IEnumerable<EnviromentalReport> reports)
+        {
+            foreach (var report in reports)
+            {
+                report.UserId = userId;
+                await _dbContext
+                    .EnviromentalReports
+                    .AddAsync(report);
+            }
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<EnviromentalReport>> GetEnviromentalReportsAsync(long userId ,int? topicId ,int pageSize, int page)
         {
             var query = _dbContext.EnviromentalReports.Include(er=>er.EnviromentalReportsTopic);

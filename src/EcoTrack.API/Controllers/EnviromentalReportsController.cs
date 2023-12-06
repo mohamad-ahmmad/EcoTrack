@@ -2,6 +2,8 @@
 using EcoTrack.API.Dtos.EnviromentalReports;
 using EcoTrack.BL.Exceptions;
 using EcoTrack.BL.Services.Users.Interfaces;
+using EcoTrack.PL.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcoTrack.API.Controllers
@@ -47,6 +49,21 @@ namespace EcoTrack.API.Controllers
                 return StatusCode(500, "Server internal error");
             }
         }
-
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> UploadReport(long userId ,IEnumerable<EnviromentalReportForPostDto> reportsDto)
+        {
+            var userRequestedId = long.Parse(User.Claims.FirstOrDefault(c => c.Type.EndsWith("nameidentifier"))!.Value);
+            
+            if (userId != userRequestedId)
+            {
+                return Forbid();
+            }
+            
+            var reports = _mapper.Map<IEnumerable<EnviromentalReport>>(reportsDto);
+            await _usersService.UploadReportAsync(userId ,reports);
+            return NoContent();
+        }
+        
     }
 }
