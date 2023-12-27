@@ -4,11 +4,13 @@ using EcoTrack.BL.Exceptions;
 using EcoTrack.BL.Services.EnviromentalReports.Interface;
 using EcoTrack.BL.Services.Users.Interfaces;
 using EcoTrack.PL.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcoTrack.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/enviroment-reports")]
     public class EnviromentalReportController : ControllerBase
     {
@@ -21,9 +23,12 @@ namespace EcoTrack.API.Controllers
             IUsersService usersService,
             IMapper mapper)
         {
-            _enviromentService = enviromentService ?? throw new ArgumentNullException(nameof(enviromentService));
-            _usersService = usersService ?? throw new ArgumentNullException(nameof(usersService));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _enviromentService = enviromentService ?? 
+                throw new ArgumentNullException(nameof(enviromentService));
+            _usersService = usersService ?? 
+                throw new ArgumentNullException(nameof(usersService));
+            _mapper = mapper ?? 
+                throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpGet]
@@ -60,7 +65,7 @@ namespace EcoTrack.API.Controllers
             }
 
             var reportToAdd = _mapper.Map<EnviromentalReport>(report);
-            await _enviromentService.AddReportAsync(reportToAdd);
+            _enviromentService.AddReport(reportToAdd);
             var createdReport = _mapper.Map<EnviromentalReportDto>(reportToAdd);
 
             return CreatedAtRoute("Get Report", new {
