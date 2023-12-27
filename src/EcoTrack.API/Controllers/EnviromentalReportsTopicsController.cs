@@ -11,10 +11,10 @@ namespace EcoTrack.API.Controllers
     [Route("/api/EnviromentalReportsTopic")]
     public class EnviromentalReportsTopicsController : Controller
     {
-        private readonly IEnviromentalReportsService _envService;
+        private readonly IEnviromentalReportTopicsService _envService;
         private readonly IMapper _mapper;   
 
-        public EnviromentalReportsTopicsController(IEnviromentalReportsService envService, IMapper mapper) 
+        public EnviromentalReportsTopicsController(IEnviromentalReportTopicsService envService, IMapper mapper) 
         {
             _envService = envService;
             _mapper = mapper;
