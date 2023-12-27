@@ -1,11 +1,12 @@
 ﻿using EcoTrack.PL.Entities;
+using EcoTrack.PL.Interfaces;
 
 namespace EcoTrack.PL.Repositories.EnviromentalReports
 {
-    public interface IEnviromentalReportsRepository
+    public interface IEnviromentalReportsRepository : IUnitOfWork
     {
         Task<IEnumerable<EnviromentalReport>> GetAllAsync(int? userId);
-        Task AddReportAsync(EnviromentalReport report);
-        Task<EnviromentalReport> GetReportAsync(int reportId);
+        void AddReport(EnviromentalReport report);
+        Task<EnviromentalReport?> GetReportAsync(int reportId);
     }
 }

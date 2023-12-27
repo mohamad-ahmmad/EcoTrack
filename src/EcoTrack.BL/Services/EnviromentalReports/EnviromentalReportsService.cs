@@ -12,11 +12,12 @@ namespace EcoTrack.BL.Services.EnviromentalReports
         public EnviromentalReportsService(
             IEnviromentalReportsRepository reportsRepo)
         {
-            _reportsRepo = reportsRepo ?? throw new ArgumentNullException(nameof(reportsRepo));
+            _reportsRepo = reportsRepo ?? 
+                throw new ArgumentNullException(nameof(reportsRepo));
         }
-        public async Task AddReportAsync(EnviromentalReport report)
+        public void AddReport(EnviromentalReport report)
         {
-            await _reportsRepo.AddReportAsync(report);
+            _reportsRepo.AddReport(report);
         }
 
         public async Task<IEnumerable<EnviromentalReport>> GetAllAsync(int? userId)
@@ -24,10 +25,11 @@ namespace EcoTrack.BL.Services.EnviromentalReports
             return await _reportsRepo.GetAllAsync(userId);
         }
 
-        public Task<EnviromentalReport> GetReportAsync(int id)
+        public async Task<EnviromentalReport> GetReportAsync(int id)
         {
-            var report = _reportsRepo.GetReportAsync(id);
-            return report ?? throw new ReportNotFoundException();
+            var report = await _reportsRepo.GetReportAsync(id);
+            return report ??
+                throw new ReportNotFoundException();
         }
     }
 }
