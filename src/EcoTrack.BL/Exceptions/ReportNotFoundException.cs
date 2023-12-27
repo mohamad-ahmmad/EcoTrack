@@ -2,7 +2,7 @@
 {
     public class ReportNotFoundException : Exception
     {
-        public ReportNotFoundException(string? message) : base(message)
+        public ReportNotFoundException() : base("Report not found")
         {
         }
     }
