@@ -4,7 +4,8 @@ namespace EcoTrack.BL.Services.EnviromentalReports.Interface
 {
     public interface IEnviromentalReportsService
     {
-        public Task<IEnumerable<EnviromentalReportsTopic>> GetAllEnviromentalReportsTopics();
-        public Task AddEnviromentalReportsTopics(EnviromentalReportsTopic topic);
+        Task<IEnumerable<EnviromentalReport>> GetAllAsync(int? userId);
+        void AddReport(EnviromentalReport report);
+        Task<EnviromentalReport> GetReportAsync(int id);
     }
 }

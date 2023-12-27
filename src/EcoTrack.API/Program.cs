@@ -44,7 +44,7 @@ builder.Services.AddDbContext<EcoTrackDBContext>(options =>
 builder.Services.AddScoped<IUserRepository, SqlUserRepository>();
 builder.Services.AddScoped<IEnviromentalReportsTopicsRepository, SqlEnviromentalReportsTopicsRepository>();
 builder.Services.AddTransient<IUsersService, UsersService>();
-builder.Services.AddTransient<IEnviromentalReportsService, EnviromentalReportsService>();
+builder.Services.AddTransient<IEnviromentalReportTopicsService, EnviromentalReportTopicsService>();
 builder.Services.AddScoped<IEnviromentalThresholdsRepository, SqlEnviromentalThresholdRepository>();
 builder.Services.AddScoped<IEnviromentalThresholdsService, EnviromentalThresholdsService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
