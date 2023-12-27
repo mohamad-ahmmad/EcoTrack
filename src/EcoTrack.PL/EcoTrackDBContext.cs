@@ -14,12 +14,14 @@ namespace EcoTrack.PL
         public DbSet<Location> Locations { get; set; }
         public DbSet<EnviromentalReport> EnviromentalReports { get; set; }
         public DbSet<EnviromentalReportsTopic> enviromentalReportsTopics { get; set; }
+        public DbSet<EnviromentalThreshold> EnviromentalThresholds { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             SeedingLocations(modelBuilder);
             SeedingUsers(modelBuilder);
             SeedingEnviromentalReportsTopics(modelBuilder);
+            SeedingEnviromentalThreshold(modelBuilder);
         }
 
         private void SeedingEnviromentalReportsTopics(ModelBuilder modelBuilder)
@@ -106,6 +108,33 @@ namespace EcoTrack.PL
                         LocationId = -8
                     }
                 );;   
+        }
+        private void SeedingEnviromentalThreshold(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<EnviromentalThreshold>().HasData
+                (
+                    new EnviromentalThreshold
+                    {
+                        EnviromentalThresholdId = -1,
+                        UserId = -9,
+                        EnviromentalReportsTopicId = -3,
+                        Value = 20
+                    },
+                     new EnviromentalThreshold
+                     {
+                         EnviromentalThresholdId = -2,
+                         UserId = -9,
+                         EnviromentalReportsTopicId = -2,
+                         Value = 80
+                     },
+                      new EnviromentalThreshold
+                      {
+                          EnviromentalThresholdId = -3,
+                          UserId = -10,
+                          EnviromentalReportsTopicId = -3,
+                          Value = 90
+                      }
+                );
         }
     }
 }

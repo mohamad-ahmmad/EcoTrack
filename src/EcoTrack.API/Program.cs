@@ -1,10 +1,14 @@
 using EcoTrack.BL.Services.EnviromentalReports;
 using EcoTrack.BL.Services.EnviromentalReports.Interface;
+using EcoTrack.BL.Services.EnviromentalThresholds;
+using EcoTrack.BL.Services.EnviromentalThresholds.Interface;
 using EcoTrack.BL.Services.Users;
 using EcoTrack.BL.Services.Users.Interfaces;
 using EcoTrack.PL;
 using EcoTrack.PL.Repositories.EnviromentalReportsTopics;
 using EcoTrack.PL.Repositories.EnviromentalReportsTopics.Interface;
+using EcoTrack.PL.Repositories.EnviromentalThresholds;
+using EcoTrack.PL.Repositories.EnviromentalThresholds.Interface;
 using EcoTrack.PL.Repositories.Users;
 using EcoTrack.PL.Repositories.Users.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -41,6 +45,8 @@ builder.Services.AddScoped<IUserRepository, SqlUserRepository>();
 builder.Services.AddScoped<IEnviromentalReportsTopicsRepository, SqlEnviromentalReportsTopicsRepository>();
 builder.Services.AddTransient<IUsersService, UsersService>();
 builder.Services.AddTransient<IEnviromentalReportsService, EnviromentalReportsService>();
+builder.Services.AddScoped<IEnviromentalThresholdsRepository, SqlEnviromentalThresholdRepository>();
+builder.Services.AddScoped<IEnviromentalThresholdsService, EnviromentalThresholdsService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

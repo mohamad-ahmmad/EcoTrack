@@ -3,6 +3,7 @@ using System;
 using EcoTrack.PL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcoTrack.PL.Migrations
 {
     [DbContext(typeof(EcoTrackDBContext))]
-    partial class EcoTrackDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231130172920_enviromental_threshold")]
+    partial class enviromentalthreshold
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,29 +106,6 @@ namespace EcoTrack.PL.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("EnviromentalThresholds");
-
-                    b.HasData(
-                        new
-                        {
-                            EnviromentalThresholdId = -1L,
-                            EnviromentalReportsTopicId = -3L,
-                            UserId = -9L,
-                            Value = 20.0
-                        },
-                        new
-                        {
-                            EnviromentalThresholdId = -2L,
-                            EnviromentalReportsTopicId = -2L,
-                            UserId = -9L,
-                            Value = 80.0
-                        },
-                        new
-                        {
-                            EnviromentalThresholdId = -3L,
-                            EnviromentalReportsTopicId = -3L,
-                            UserId = -10L,
-                            Value = 90.0
-                        });
                 });
 
             modelBuilder.Entity("EcoTrack.PL.Entities.Location", b =>
@@ -221,7 +201,7 @@ namespace EcoTrack.PL.Migrations
                         new
                         {
                             UserId = -10L,
-                            BirthDate = new DateTime(2023, 12, 6, 17, 31, 27, 51, DateTimeKind.Local).AddTicks(7531),
+                            BirthDate = new DateTime(2023, 11, 30, 19, 29, 19, 936, DateTimeKind.Local).AddTicks(8975),
                             Deleted = false,
                             Email = "morsee@egy.pt",
                             FirstName = "Mer'e",
@@ -234,7 +214,7 @@ namespace EcoTrack.PL.Migrations
                         new
                         {
                             UserId = -9L,
-                            BirthDate = new DateTime(2023, 12, 6, 17, 31, 27, 51, DateTimeKind.Local).AddTicks(7568),
+                            BirthDate = new DateTime(2023, 11, 30, 19, 29, 19, 936, DateTimeKind.Local).AddTicks(9010),
                             Deleted = false,
                             Email = "moghrabi@egy.pt",
                             FirstName = "Sal",

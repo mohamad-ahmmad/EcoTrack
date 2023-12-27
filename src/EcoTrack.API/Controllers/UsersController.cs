@@ -49,11 +49,7 @@ namespace EcoTrack.API.Controllers
             return Ok(usersDto);
         }
 
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> af4280d (Add policy on deletion)
         [HttpGet("{userId}")]
         public async Task<ActionResult<UserDto>> GetUserById(int userId)
         {
@@ -127,17 +123,13 @@ namespace EcoTrack.API.Controllers
         [Authorize]
         public async Task<ActionResult> DeleteUser(int userId)
         {
-<<<<<<< HEAD
             var userRequestedId =long.Parse(User.Claims.FirstOrDefault(c => c.Type.EndsWith("nameidentifier"))!.Value);
-=======
-            var userRequestedId = long.Parse(User.Claims.FirstOrDefault(c => c.Type.EndsWith("nameidentifier"))!.Value);
->>>>>>> af4280d (Add policy on deletion)
 
             if (userId != userRequestedId)
             {
                 return Forbid();
             }
-
+            
             try
             {
                 await _usersService.DeleteUserAsync(userId);

@@ -17,6 +17,6 @@ namespace EcoTrack.PL.Entities
         public bool Deleted { set; get; }
         public UserLevel UserLevel { set; get; } = UserLevel.User;
         public List<EnviromentalReport> enviromentalReports { set; get; } = new List<EnviromentalReport>();
-
+        public List<EnviromentalThreshold> enviromentalThresholds { set; get; }  = new List<EnviromentalThreshold>();
     }
 }
