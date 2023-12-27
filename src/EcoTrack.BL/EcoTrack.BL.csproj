@@ -8,10 +8,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EcoTrack.PL\EcoTrack.PL.csproj" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="MockedRepos\" />
+    <Folder Include="Profiles\" />
   </ItemGroup>
 
 </Project>
