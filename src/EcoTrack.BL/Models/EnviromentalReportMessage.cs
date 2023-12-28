@@ -1,4 +1,4 @@
-﻿namespace EcoTrack.BL.Services.EniromentalReportsSender
+﻿namespace EcoTrack.BL.Models
 {
     public class EnviromentalReportMessage
     {

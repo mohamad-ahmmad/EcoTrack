@@ -1,16 +1,6 @@
-using EcoTrack.BL.Services.EnviromentalReports;
-using EcoTrack.BL.Services.EnviromentalReports.Interface;
-using EcoTrack.BL.Services.EnviromentalThresholds;
-using EcoTrack.BL.Services.EnviromentalThresholds.Interface;
-using EcoTrack.BL.Services.Users;
-using EcoTrack.BL.Services.Users.Interfaces;
+using EcoTrack.API;
+using EcoTrack.BL.Models;
 using EcoTrack.PL;
-using EcoTrack.PL.Repositories.EnviromentalReportsTopics;
-using EcoTrack.PL.Repositories.EnviromentalReportsTopics.Interface;
-using EcoTrack.PL.Repositories.EnviromentalThresholds;
-using EcoTrack.PL.Repositories.EnviromentalThresholds.Interface;
-using EcoTrack.PL.Repositories.Users;
-using EcoTrack.PL.Repositories.Users.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -25,29 +15,22 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File("logs/ecotrack.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
-// Add services to the container.
+
 builder.Host.UseSerilog();
+
 builder.Services.AddControllers(options =>
 {
     options.ReturnHttpNotAcceptable = true;
 }).AddNewtonsoftJson()
 .AddXmlDataContractSerializerFormatters();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddEcoTrack();
 
 builder.Services.AddDbContext<EcoTrackDBContext>(options =>
 {
     var mysqlConnection = builder.Configuration["ConnectionStrings:MySqlConnectionString"];
     options.UseMySql(mysqlConnection, ServerVersion.AutoDetect(mysqlConnection));
 });
-builder.Services.AddScoped<IUserRepository, SqlUserRepository>();
-builder.Services.AddScoped<IEnviromentalReportsTopicsRepository, SqlEnviromentalReportsTopicsRepository>();
-builder.Services.AddTransient<IUsersService, UsersService>();
-builder.Services.AddTransient<IEnviromentalReportTopicsService, EnviromentalReportTopicsService>();
-builder.Services.AddScoped<IEnviromentalThresholdsRepository, SqlEnviromentalThresholdRepository>();
-builder.Services.AddScoped<IEnviromentalThresholdsService, EnviromentalThresholdsService>();
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -63,6 +46,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 Encoding.UTF8.GetBytes(builder.Configuration["Authentication:Key"]))
         };
     });
+
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("OnlyAdmins", (pb) =>
@@ -71,9 +55,14 @@ builder.Services.AddAuthorization(options =>
     });
 
 });
+
+builder.Services.Configure<RabbitMqConfiguration>(builder.Configuration.GetSection("RabbitMq"));
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

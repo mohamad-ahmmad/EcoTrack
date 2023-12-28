@@ -17,5 +17,10 @@ namespace EcoTrack.BL.Services.MessageSerializer
         {
             return JsonSerializer.Serialize<TMessage>(message);
         }
+
+        public byte[] SerializeToUtf8Bytes(TMessage message)
+        {
+            return JsonSerializer.SerializeToUtf8Bytes<TMessage>(message);
+        }
     }
 }

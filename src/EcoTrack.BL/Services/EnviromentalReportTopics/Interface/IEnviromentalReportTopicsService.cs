@@ -1,6 +1,6 @@
 ﻿using EcoTrack.PL.Entities;
 
-namespace EcoTrack.BL.Services.EnviromentalReports.Interface
+namespace EcoTrack.BL.Services.EnviromentalReportTopics.Interface
 {
     public interface IEnviromentalReportTopicsService
     {

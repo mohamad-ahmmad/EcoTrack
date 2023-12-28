@@ -4,5 +4,6 @@
     {
         string Serialize(TMessage message);
         TMessage Deserialize(string message);
+        byte[] SerializeToUtf8Bytes(TMessage message);
     }
 }

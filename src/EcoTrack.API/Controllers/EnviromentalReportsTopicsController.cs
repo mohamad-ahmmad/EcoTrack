@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using EcoTrack.API.Dtos.EnviromentalReportsTopic;
-using EcoTrack.BL.Services.EnviromentalReports.Interface;
+using EcoTrack.BL.Services.EnviromentalReportTopics.Interface;
 using EcoTrack.PL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

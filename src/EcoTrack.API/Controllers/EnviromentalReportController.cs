@@ -69,7 +69,7 @@ namespace EcoTrack.API.Controllers
             var createdReport = _mapper.Map<EnviromentalReportDto>(reportToAdd);
 
             return CreatedAtRoute("Get Report", new {
-                id = createdReport.EnviromentalReportId
+                id = reportToAdd.EnviromentalReportId
             },
             createdReport
             );
