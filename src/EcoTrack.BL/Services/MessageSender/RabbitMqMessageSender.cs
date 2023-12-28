@@ -11,6 +11,7 @@ namespace EcoTrack.BL.Services.MessageSender
         private readonly IMessageSerializer<TMessage> _messageSerializer;
         private readonly RabbitMqConfiguration _options;
         private readonly IModel _channel;
+        private readonly IConnection _connection;
 
         public RabbitMqMessageSender(
             ConnectionFactory connectionFactory,
@@ -24,10 +25,10 @@ namespace EcoTrack.BL.Services.MessageSender
             _options = options.CurrentValue ?? 
                 throw new ArgumentNullException(nameof(options));
             
-            _channel = InitializeClient();
+            (_channel, _connection) = InitializeClient();
         }
 
-        private IModel InitializeClient()
+        private (IModel, IConnection) InitializeClient()
         {
             _connectionFactory.HostName = _options.IpAddress;
             var connection = _connectionFactory.CreateConnection();
@@ -35,7 +36,7 @@ namespace EcoTrack.BL.Services.MessageSender
 
             model.ExchangeDeclare(_options.ExchangeName, ExchangeType.Topic, true, false);
 
-            return model;
+            return (model, connection);
         }
 
         public void SendMessage(TMessage message, string routingKey)

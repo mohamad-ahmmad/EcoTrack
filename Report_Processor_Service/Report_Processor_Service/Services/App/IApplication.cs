@@ -1,4 +1,4 @@
-﻿namespace Report_Processor_Service.Services
+﻿namespace Report_Processor_Service.Services.App
 {
     public interface IApplication
     {
