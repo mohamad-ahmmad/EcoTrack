@@ -15,6 +15,9 @@ using Microsoft.EntityFrameworkCore;
 using EcoTrack.BL.Services.EnviromentalReports.Interface;
 using EcoTrack.BL.Services.EnviromentalReports;
 using EcoTrack.PL.Repositories.EnviromentalReports;
+using EcoTrack.BL.Interfaces;
+using EcoTrack.BL.Services.MessageSerializer;
+using EcoTrack.BL.Services.MessageSender;
 
 namespace EcoTrack.API
 {
@@ -31,7 +34,10 @@ namespace EcoTrack.API
             services.AddTransient<IEnviromentalReportTopicsService, EnviromentalReportTopicsService>();
             services.AddScoped<IEnviromentalThresholdsService, EnviromentalThresholdsService>();
             services.AddSingleton<IEnviromentalReportsService, EnviromentalReportsService>();
-            
+
+            services.AddSingleton(typeof(IMessageSerializer<>), typeof(JsonMessageSerializer<>));
+            services.AddSingleton(typeof(IMessageSender<>), typeof(RabbitMqMessageSender<>));
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             return services;
