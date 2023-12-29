@@ -92,5 +92,24 @@ namespace EcoTrack.PL.Repositories.Users
                 .Where(u => u.Password == password && u.Username == username)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<User?> GetUserById(int id, bool withFollows, bool withFollowers)
+        {
+            IQueryable<User> query = _dbContext.Users
+            .Include(u => u.Location);  
+
+            if (withFollows)
+            {
+                query = query.Include(u => u.Follows);
+            }
+            if (withFollowers)
+            {
+                query = query.Include(u => u.Followers);
+            }
+
+            return await query
+                .Where(u => u.UserId == id)
+                .FirstOrDefaultAsync();
+        }
     }
 }
