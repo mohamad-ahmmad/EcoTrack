@@ -2,7 +2,6 @@
 {
     public interface IMessageSerializer<TMessage>
     {
-
-
+        TMessage Deserialize(byte[] bytes);
     }
 }
