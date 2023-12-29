@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Report_Processor_Service.Models;
 
 namespace Report_Processor_Service.Services.MessageProcessor
 {
-    internal class EnviromentalReportProcessor
+    public class EnviromentalReportProcessor : IMessageProcessor<EnviromentalReportMessage>
     {
+        public EnviromentalReportProcessor()
+        {
+            
+        }
+        public void Process(EnviromentalReportMessage message)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
