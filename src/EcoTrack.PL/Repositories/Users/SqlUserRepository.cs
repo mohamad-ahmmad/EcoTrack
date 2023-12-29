@@ -96,15 +96,16 @@ namespace EcoTrack.PL.Repositories.Users
         public async Task<User?> GetUserById(int id, bool withFollows, bool withFollowers)
         {
             IQueryable<User> query = _dbContext.Users
-            .Include(u => u.Location);  
-
+                .Include(u => u.Location);
+                
             if (withFollows)
             {
                 query = query.Include(u => u.Follows);
             }
             if (withFollowers)
             {
-                query = query.Include(u => u.Followers);
+                query = query.Include(u => u.Followers)
+                    .ThenInclude(followers => followers.Select(f => f.enviromentalThresholds));
             }
 
             return await query

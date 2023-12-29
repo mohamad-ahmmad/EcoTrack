@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using EcoTrack.BL.Models;
+using EcoTrack.PL.Entities;
 
 namespace EcoTrack.BL.Profiles
 {
-    internal class EnviromentalReportProfile
+    public class EnviromentalReportProfile : Profile
     {
+        public EnviromentalReportProfile() 
+        {
+            CreateMap<EnviromentalReport, EnviromentalReportMessage>()
+                .ForMember(report => report.Topic, opt => opt.MapFrom(s => s.EnviromentalReportsTopic.Name));
+        }
     }
 }

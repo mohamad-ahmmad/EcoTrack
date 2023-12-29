@@ -24,7 +24,10 @@ namespace Report_Processor_Service.Services.MessageProcessor
             var usersToNotify = new List<User>();
             foreach(var follower in user.Followers)
             {
-                bool shouldNotify = follower.enviromentalThresholds.Any(th => th.Value <= message.Value);
+                bool shouldNotify = follower.enviromentalThresholds
+                    .Any(th => 
+                            th.Value <= message.Value && 
+                            th.EnviromentalReportsTopic.Name == message.Topic);
 
                 if (shouldNotify)
                 {
@@ -35,7 +38,5 @@ namespace Report_Processor_Service.Services.MessageProcessor
             // TODO: notify each user
         }
 
-
-        
     }
 }
