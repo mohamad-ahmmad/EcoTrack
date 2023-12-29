@@ -12,4 +12,8 @@
 	<PackageReference Include="RabbitMQ.Client" Version="6.6.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\EcoTrack.PL\EcoTrack.PL.csproj" />
+  </ItemGroup>
+
 </Project>

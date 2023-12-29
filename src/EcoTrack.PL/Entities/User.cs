@@ -18,5 +18,7 @@ namespace EcoTrack.PL.Entities
         public UserLevel UserLevel { set; get; } = UserLevel.User;
         public List<EnviromentalReport> enviromentalReports { set; get; } = new List<EnviromentalReport>();
         public List<EnviromentalThreshold> enviromentalThresholds { set; get; }  = new List<EnviromentalThreshold>();
+        public List<User> Follows { set; get; } = new List<User>();
+        public List<User> Followers { get;set; } = new List<User>();
     }
 }

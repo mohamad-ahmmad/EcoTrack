@@ -9,15 +9,25 @@ namespace EcoTrack.PL
         {
 
         }
-        public EcoTrackDBContext(DbContextOptions dbContextOptions) : base(dbContextOptions) { }  
+        public EcoTrackDBContext(DbContextOptions<EcoTrackDBContext> dbContextOptions) : base(dbContextOptions) { }
         public DbSet<User> Users { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<EnviromentalReport> EnviromentalReports { get; set; }
         public DbSet<EnviromentalReportsTopic> enviromentalReportsTopics { get; set; }
         public DbSet<EnviromentalThreshold> EnviromentalThresholds { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            var mysqlConnection = "server=localhost;database=EcoTrackDB;user=root;password=;";
+            optionsBuilder.UseMySql(mysqlConnection, ServerVersion.AutoDetect(mysqlConnection));
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>()
+            .HasMany(u => u.Followers)
+            .WithMany(u => u.Follows)
+            .UsingEntity(j => j.ToTable("UserFollows"));
+
             SeedingLocations(modelBuilder);
             SeedingUsers(modelBuilder);
             SeedingEnviromentalReportsTopics(modelBuilder);
@@ -59,23 +69,23 @@ namespace EcoTrack.PL
                     new Location
                     {
 
-                        LocationId= -9,
-                        CityName="Jenin",
-                        CountryName="Palestine"
+                        LocationId = -9,
+                        CityName = "Jenin",
+                        CountryName = "Palestine"
                     },
                     new Location
                     {
-                        LocationId=-8,
-                        CityName="Tokyo",
-                        CountryName="Japan"
+                        LocationId = -8,
+                        CityName = "Tokyo",
+                        CountryName = "Japan"
                     },
                     new Location
                     {
                         LocationId = -7,
-                        CityName ="Seoul",
-                        CountryName="North Korea"
+                        CityName = "Seoul",
+                        CountryName = "North Korea"
                     }
-                    
+
                 );
         }
         private void SeedingUsers(ModelBuilder mb)
@@ -85,19 +95,19 @@ namespace EcoTrack.PL
                     new User
                     {
                         UserId = -10,
-                        Username="morse",
-                        Password= "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
-                        Email="morsee@egy.pt",
-                        FirstName="Mer'e",
-                        LastName="Pharaoh",
-                        Deleted=false,
-                        BirthDate=DateTime.Now,
-                        LocationId= -10,
-                        
+                        Username = "morse",
+                        Password = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+                        Email = "morsee@egy.pt",
+                        FirstName = "Mer'e",
+                        LastName = "Pharaoh",
+                        Deleted = false,
+                        BirthDate = DateTime.Now,
+                        LocationId = -10,
+
                     },
                     new User
                     {
-                        UserId= -9, 
+                        UserId = -9,
                         Username = "mohammad",
                         Password = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
                         Email = "moghrabi@egy.pt",
@@ -107,7 +117,7 @@ namespace EcoTrack.PL
                         BirthDate = DateTime.Now,
                         LocationId = -8
                     }
-                );;   
+                ); ;
         }
         private void SeedingEnviromentalThreshold(ModelBuilder modelBuilder)
         {
